@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- 注解扫描包 -->
+	<context:component-scan base-package="com.web" />
+
+	<!-- 开启注解 -->
+	<mvc:annotation-driven />
+
+	<!-- 静态资源(js/image)的访问 -->
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/ligerUI/" mapping="/ligerUI/**" />
+
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<!-- 多个拦截器,顺序执行 -->
+		<mvc:interceptor>
+			<!-- 如果不配置或/**,将拦截所有的Controller -->
+			<mvc:mapping path="/index/**" />
+			<mvc:mapping path="/bonus/**" />
+			<mvc:mapping path="/content/**" />
+			<mvc:mapping path="/userdownload/**" />
+			<mvc:mapping path="/clientquestion/**" />
+			<bean class="com.web.interceptors.FreeMarkerViewInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<!-- 后台配置拦截 -->
+			<mvc:mapping path="/admin/approve/**" />
+			<mvc:mapping path="/admin/bonus/**" />
+			<mvc:mapping path="/admin/Content/**" />
+			<mvc:mapping path="/admin/export/**" />
+			<mvc:mapping path="/admin/home/**" />
+			<mvc:mapping path="/admin/import/**" />
+			<mvc:mapping path="/admin/client/**" />
+			<bean class="com.web.interceptors.FreeMarkerViewInterceptorAdmin"></bean>
+		</mvc:interceptor>
+
+	</mvc:interceptors>
+
+	<!-- 定义视图解析器 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+</beans>
