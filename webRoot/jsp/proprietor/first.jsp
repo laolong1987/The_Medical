@@ -73,8 +73,13 @@
             });
             
             function iniMenu(){
-            	<c:forEach items="${menus}" varStatus="i" var="menu">
-	            	var tree = $("#tree${i.index}").ligerTree({
+            	 var data = [];
+                 
+                 data.push({ id: 1, value: '/admin/Content/listcontent1', text: 'case管理' });
+                 data.push({ id: 2, value: '/admin/Content/listcontent2', text: '人员管理' });
+                 data.push({ id: 3, value: '/admin/Content/listcontent3', text: '病人管理' });
+	            	var tree = $("#tree").ligerTree({
+	            		data:data,
 						nodeWidth : 120, 																
 						idFieldName : 'id',
 						parentIDFieldName : 'pid',
@@ -82,14 +87,8 @@
 						checkbox : false,
 						slide : false,
 						onClick : onClick
+						
 					});
-					tree.clear();
-					tree.loadData(null,"${ctx}/common/findSecondMenus", "id=${menu.id}");
-					// 点击鼠标时更改顶部menu式样
-					$("#acc${i.index}").mouseup(function(){
-						setTopMenuHover('topMenu${i.index}', 'acc${i.index}');						
-					});   
-				</c:forEach>
             }
             
             function onClick(node) {	
@@ -143,15 +142,7 @@
             
             function pages_init()
             {
-                var tabJson = $.cookie('liger-home-tab'); 
-                if (tabJson)
-                { 
-                    var tabitems = JSON2.parse(tabJson);
-                    for (var i = 0; tabitems && tabitems[i];i++)
-                    { 
-                        f_addTab(tabitems[i].tabid, tabitems[i].text, tabitems[i].url);
-                    } 
-                }
+            
             }
             function saveTabStatus()
             { 
@@ -628,9 +619,7 @@ body {
 	</div>
 	<div id="layout1" style="width:99.2%; margin:0 auto; margin-top:4px; ">
 		<div position="left" title="菜单" id="accordion1">
-		<li><a  href="javascript:f_addTab('xtgl4','文档管理','/admin/Content/listcontent')">文档管理</a> </li>
-		<li><a  href="javascript:f_addTab('xtgl7','上传管理','/admin/Content/listupload')">上传管理</a></li>						
-	  <li><a  href="javascript:f_addTab('xtgl9','轮播图管理','/admin/Content/listimg')">轮播图管理</a></li>
+ <ul id="tree"></ul>
 
 		</div>
 		<div position="center" id="framecenter">
